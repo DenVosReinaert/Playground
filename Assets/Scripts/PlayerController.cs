@@ -26,10 +26,6 @@ public class PlayerController : MonoBehaviour
         mouseRotationInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         moveDir = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized;
-
-       
-
-
     }
 
     void FixedUpdate()
