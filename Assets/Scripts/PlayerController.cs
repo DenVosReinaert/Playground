@@ -12,6 +12,15 @@ public class PlayerController : MonoBehaviour
     public Rigidbody playerRb;
     public float moveSpeed;
 
+    public float jumpHeight;
+    [SerializeField]
+    GameObject groundingObj;
+    [SerializeField]
+    float groundingObjRadius;
+    [SerializeField]
+    LayerMask groundMask;
+    public bool grounded;
+
     [SerializeField]
     bool moveLock;
 
@@ -27,16 +36,24 @@ public class PlayerController : MonoBehaviour
         moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         moveDir = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized;
 
-       
-
+        if (!moveLock)
+            if (Input.GetButtonDown("Jump") && grounded)
+            {
+                Jump();
+            }
 
     }
 
     void FixedUpdate()
     {
+        GroundCheck();
+        Debug.DrawLine(groundingObj.transform.position, groundingObj.transform.position + -groundingObj.transform.up * groundingObjRadius, Color.yellow);
+
         if (moveLock != true)
         {
             playerRb.MovePosition(playerRb.position + (moveDir * moveSpeed * Time.deltaTime));
+
+
 
             #region Camera Controls
 
@@ -47,5 +64,22 @@ public class PlayerController : MonoBehaviour
 
             #endregion
         }
+    }
+
+    bool GroundCheck()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(groundingObj.transform.position, groundingObjRadius, groundMask);
+
+        foreach (Collider collider in hitColliders)
+        {
+            return grounded = true;
+        }
+
+        return grounded = false;
+    }
+
+    public void Jump()
+    {
+        playerRb.AddForce(transform.up * jumpHeight, ForceMode.Impulse);
     }
 }
