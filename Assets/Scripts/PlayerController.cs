@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(targetRay, out targetRayHit, interactionRange, interactableLayers))
         {
-            var interactableObject = targetRayHit.transform.gameObject.GetComponent<IInteractable>();
+            var interactableObject = targetRayHit.transform.parent.gameObject.GetComponent<IInteractable>();
             if (interactableObject != null)
             {
                 interactableObject.Interact();

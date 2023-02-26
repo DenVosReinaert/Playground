@@ -10,6 +10,8 @@ public class DoorController : MonoBehaviour, IInteractable
 
     void Start()
     {
+        requiredKeysCollected = new List<bool> ();
+
         if (requiredKeys.Count > 0)
             foreach (KeyController key in requiredKeys)
             {
